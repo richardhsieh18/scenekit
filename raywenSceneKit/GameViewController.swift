@@ -78,6 +78,7 @@ class GameViewController: UIViewController {
         let geometryNode = SCNNode(geometry: geometry)
         //
         scnScene.rootNode.addChildNode(geometryNode)
+        
     }
 
 }
