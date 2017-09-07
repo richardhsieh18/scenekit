@@ -16,6 +16,8 @@ class GameViewController: UIViewController {
     var cameraNode: SCNNode!
     //設定更新時間
     var spawnTime: TimeInterval = 0
+    //Helper的寫法
+    var game = GameHelper.sharedInstance
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,6 +25,7 @@ class GameViewController: UIViewController {
         setupScene()
         setupCamera()
         //spawnShape()
+        setupHUD()
     }
     //裝置可以旋轉
     override var shouldAutorotate: Bool {
@@ -37,8 +40,8 @@ class GameViewController: UIViewController {
         scnView = self.view as! SCNView
         // 1 秀出scene的狀態
         scnView.showsStatistics = true
-        // 2 允許控制camera
-        scnView.allowsCameraControl = true
+        // 2 允許控制camera //遊戲設定完畢後改為False
+        scnView.allowsCameraControl = false
         // 3 允許自動加上光線
         scnView.autoenablesDefaultLighting = true
         //scnview的代理為gameviewcontroller
@@ -55,7 +58,7 @@ class GameViewController: UIViewController {
     func setupCamera() {
         cameraNode = SCNNode()
         cameraNode.camera = SCNCamera()
-        cameraNode.position = SCNVector3Make(0, 0, 10)
+        cameraNode.position = SCNVector3Make(0, 5, 10)
         //
         scnScene.rootNode.addChildNode(cameraNode)
     }
@@ -99,7 +102,15 @@ class GameViewController: UIViewController {
         //L5建立個 SCNParticleSystem在geometryNode掛上去
         let trailEmitter = createTrail(color: color, geometry: geometry)
         geometryNode.addParticleSystem(trailEmitter)
-        //一樣把shape的node加在rootnote裡
+        if color == UIColor.black {
+            geometryNode.name = "BAD"
+        } else {
+            geometryNode.name = "GOOD"
+        }
+        
+        
+        
+        //最後把shape的node加在rootnote裡
         scnScene.rootNode.addChildNode(geometryNode)
     }
     
@@ -120,7 +131,56 @@ class GameViewController: UIViewController {
         trail.emitterShape = geometry
         return trail
     }
-
+    //L5 設立計分板
+    func setupHUD() {
+        game.hudNode.position = SCNVector3Make(0.0, 10.0, 0)
+        scnScene.rootNode.addChildNode(game.hudNode)
+    }
+    
+    //L5 點擊事件好壞之分
+    func handleTouchFor(node: SCNNode) {
+        if node.name == "GOOD" {
+            game.score += 1
+            //爆炸事件
+            createExplosion(geometry: node.geometry!, position: node.presentation.position, rotation: node.presentation.rotation)
+            node.removeFromParentNode()
+        } else if node.name == "BAD" {
+            game.lives -= 1
+            //爆炸事件
+            createExplosion(geometry: node.geometry!, position: node.presentation.position, rotation: node.presentation.rotation)
+            node.removeFromParentNode()
+        }
+    }
+    //常用的touch事件
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        //touch陣列的第一個
+        let touch = touches.first!
+        //touch的location在scnview上
+        let location = touch.location(in: scnView)
+        //scnView的hitTest方法，位置為scnView的locaiton，找兩個View的交集
+        let hitResults = scnView.hitTest(location, options: nil)
+        //如果有觸發到scnView的hitTest方法
+        if let result = hitResults.first {
+            //判斷加分或扣分
+            handleTouchFor(node: result.node)
+        }
+    }
+    //Explosion效果
+    func createExplosion(geometry: SCNGeometry, position: SCNVector3, rotation: SCNVector4) {
+        let explosion = SCNParticleSystem(named: "Explode.scnp", inDirectory: nil)!
+        explosion.emitterShape = geometry
+        //explosion的位置
+        explosion.birthLocation = .surface
+        //旋轉
+        let rotationMatrix = SCNMatrix4MakeRotation(rotation.w, rotation.x, rotation.y, rotation.z)
+        //位置
+        let translationMatrix = SCNMatrix4MakeTranslation(position.x, position.y, position.z)
+        //
+        let transformMatrix = SCNMatrix4Mult(rotationMatrix, translationMatrix)
+        scnScene.addParticleSystem(explosion, transform: transformMatrix)
+    }
+    
+    
 }
 //SCNSceneRender代理
 extension GameViewController: SCNSceneRendererDelegate {
@@ -134,6 +194,7 @@ extension GameViewController: SCNSceneRendererDelegate {
         }
         //清除子node
         cleanScene()
+        game.updateHUD()
     }
     
 }
