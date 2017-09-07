@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0486FA191F60F94C008D495B /* Trail.scnp in Resources */ = {isa = PBXBuildFile; fileRef = 0486FA171F60F94C008D495B /* Trail.scnp */; };
+		0486FA1A1F60F94C008D495B /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = 0486FA181F60F94C008D495B /* spark.png */; };
 		04BA5AE41F5FAF5700762850 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BA5AE31F5FAF5700762850 /* AppDelegate.swift */; };
 		04BA5AE81F5FAF5700762850 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BA5AE71F5FAF5700762850 /* GameViewController.swift */; };
 		04BA5AEB1F5FAF5700762850 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 04BA5AE91F5FAF5700762850 /* Main.storyboard */; };
@@ -24,6 +26,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0486FA171F60F94C008D495B /* Trail.scnp */ = {isa = PBXFileReference; lastKnownFileType = file.scp; path = Trail.scnp; sourceTree = "<group>"; };
+		0486FA181F60F94C008D495B /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spark.png; sourceTree = "<group>"; };
 		04BA5AE01F5FAF5700762850 /* raywenSceneKit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = raywenSceneKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04BA5AE31F5FAF5700762850 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		04BA5AE71F5FAF5700762850 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
@@ -53,6 +57,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0486FA161F60F922008D495B /* New Group */ = {
+			isa = PBXGroup;
+			children = (
+				0486FA171F60F94C008D495B /* Trail.scnp */,
+				0486FA181F60F94C008D495B /* spark.png */,
+			);
+			name = "New Group";
+			sourceTree = "<group>";
+		};
 		04BA5AD71F5FAF5700762850 = {
 			isa = PBXGroup;
 			children = (
@@ -72,6 +85,7 @@
 		04BA5AE21F5FAF5700762850 /* raywenSceneKit */ = {
 			isa = PBXGroup;
 			children = (
+				0486FA161F60F922008D495B /* New Group */,
 				04BA5AE31F5FAF5700762850 /* AppDelegate.swift */,
 				04BA5AE71F5FAF5700762850 /* GameViewController.swift */,
 				04BA5B061F5FBAF700762850 /* ShapeType.swift */,
@@ -159,8 +173,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				04BA5AF01F5FAF5700762850 /* LaunchScreen.storyboard in Resources */,
+				0486FA1A1F60F94C008D495B /* spark.png in Resources */,
 				04BA5AED1F5FAF5700762850 /* Assets.xcassets in Resources */,
 				04BA5AEB1F5FAF5700762850 /* Main.storyboard in Resources */,
+				0486FA191F60F94C008D495B /* Trail.scnp in Resources */,
 				04BA5B051F5FB43800762850 /* GeometryFighter.scnassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

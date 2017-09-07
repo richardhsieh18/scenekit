@@ -80,9 +80,11 @@ class GameViewController: UIViewController {
         default:
             geometry = SCNBox(width: 1.0, height: 1.0, length: 1.0, chamferRadius: 0.0)
         }
-        //L3 幫geometry加上顏色
-        geometry.materials.first?.diffuse.contents = UIColor.random()
+        //L3 幫geometry加上顏色 L5 生個變數小修改一下
+        let color = UIColor.random()
+        geometry.materials.first?.diffuse.contents = color
         let geometryNode = SCNNode(geometry: geometry)
+        //print(geometryNode)
         //加上物理特性，type有三種，static,dynamic,Kinematic
         geometryNode.physicsBody = SCNPhysicsBody(type: .dynamic, shape: nil)
         //設定x,y為random
@@ -94,6 +96,9 @@ class GameViewController: UIViewController {
         let position = SCNVector3Make(0.05, 0.05, 0.05)
         //asimpulse 衝擊力為true才會有跳動
         geometryNode.physicsBody?.applyForce(force, at: position, asImpulse: true)
+        //L5建立個 SCNParticleSystem在geometryNode掛上去
+        let trailEmitter = createTrail(color: color, geometry: geometry)
+        geometryNode.addParticleSystem(trailEmitter)
         //一樣把shape的node加在rootnote裡
         scnScene.rootNode.addChildNode(geometryNode)
     }
@@ -107,6 +112,13 @@ class GameViewController: UIViewController {
                 node.removeFromParentNode()
             }
         }
+    }
+    //L5 加特效，先加了ScnParticalSystem的file
+    func createTrail(color: UIColor, geometry: SCNGeometry) -> SCNParticleSystem {
+        let trail = SCNParticleSystem(named: "Trail.scnp", inDirectory: nil)!
+        trail.particleColor = color
+        trail.emitterShape = geometry
+        return trail
     }
 
 }
